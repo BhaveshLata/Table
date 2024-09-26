@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dynamic Table Generator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Dynamic Table Generator</h1>
+
+    <form>
+      <label for="rowCount">Row Count:</label>
+      <input type="number" id="rowCount" name="rowCount" required /><br /><br />
+      <label for="colCount">Column Count:</label>
+      <input type="number" id="colCount" name="colCount" required /><br /><br />
+    </form>
+    <button type="button" id="createTableBtn" onclick="createTable()">
+      Create Table
+    </button>
+    <button type="button" id="addRowBtn" onclick="addRow()" disabled>
+      +Row
+    </button>
+    <button type="button" id="addColBtn" onclick="addCol()" disabled>
+      +Column
+    </button>
+    <div id="tableContainer"></div>
+
+    <script>
+      let table;
+
+      function createTable() {
+        const rowCount = document.getElementById("rowCount").value;
+        const colCount = document.getElementById("colCount").value;
+
+        if (rowCount <= 0 || colCount <= 0) {
+          alert("Row and column counts must be greater than 0.");
+          return;
+        }
+
+        table = document.createElement("table");
+        table.border = "1";
+
+        for (let i = 0; i < rowCount; i++) {
+          const row = table.insertRow();
+          for (let j = 0; j < colCount; j++) {
+            const cell = row.insertCell();
+            cell.innerHTML = `Cell ${i + 1},${j + 1}`;
+          }
+        }
+
+        document.getElementById("tableContainer").appendChild(table);
+        document.getElementById("addRowBtn").disabled = false;
+        document.getElementById("addColBtn").disabled = false;
+      }
+
+      function addRow() {
+        const row = table.insertRow();
+        for (let i = 0; i < table.rows[0].cells.length; i++) {
+          const cell = row.insertCell();
+          cell.innerHTML = `Cell ${table.rows.length - 1},${i + 1}`;
+        }
+      }
+
+      function addCol() {
+        for (let i = 0; i < table.rows.length; i++) {
+          const cell = table.rows[i].insertCell();
+          cell.innerHTML = `Cell ${i + 1},${table.rows[0].cells.length - 1}`;
+        }
+      }
+    </script>
+  </body>
+</html>
